@@ -14,14 +14,18 @@ abstract class Application
   protected $httpRequest;
   protected $httpResponse;
   protected $name;
+  protected $user;
+  protected $config;
 
-  public function __construct()
+  public function __construct($user, $config)
   {
 	$this->httpRequest = new HTTPRequest($this);
 	$this->httpResponse = new HTTPResponse($this);
 	$this->name = '';
-  }
+	$this->user = $user;
+	$this->config = $config;
 
+  }
 
   public function getController()
   {
@@ -71,7 +75,6 @@ abstract class Application
 	return new $controllerClass($this, $matchedRoute->module(),
 	  $matchedRoute->action());
   }
-
 
   abstract public function run();
 
