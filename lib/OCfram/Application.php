@@ -9,27 +9,65 @@
 namespace OCFram;
 
 
+/**
+ * Class Application
+ *
+ * model pour chacun de mes coposant
+ *
+ * @package OCFram
+ */
 abstract class Application
 {
+  /**
+   * @var HTTPRequest
+   */
   protected $httpRequest;
+  /**
+   * @var HTTPResponse
+   */
   protected $httpResponse;
+
+  /**
+   * @var string
+   * permet d'appeler les fichier correspondants
+   */
   protected $name;
+
+  /**
+   * @var /User
+   *      charge l'user et ses droits
+   */
   protected $user;
+
+  /**
+   * @var
+   *     charge un fichier xml qui contient les valeurs de config
+   */
   protected $config;
 
-  public function __construct($user, $config)
+  /**
+   * Application constructor.
+   *
+   * @param $user
+   * @param $config
+   */
+  public function __construct()
   {
 	$this->httpRequest = new HTTPRequest($this);
 	$this->httpResponse = new HTTPResponse($this);
 	$this->name = '';
-	$this->user = $user;
-	$this->config = $config;
+	$this->user = new User($this);
+	$this->config = new Config($this);
 
   }
 
+  /**
+   * @return mixed
+   */
   public function getController()
   {
-	$router = new Router;
+	//
+    $router = new Router;
 
 	$xml = new \DOMDocument;
 	$xml->load(__DIR__ . '/../../App/' . $this->name . '/Config/routes.xml');
@@ -37,6 +75,8 @@ abstract class Application
 	$routes = $xml->getElementsByTagName('route');
 
 	// On parcourt les routes du fichier XML.
+	// j'ajoute au router toutes les routes
+	// je pourai le faire directement dans le router ce
 	foreach ($routes as $route)
 	{
 	  $vars = [];
@@ -76,18 +116,30 @@ abstract class Application
 	  $matchedRoute->action());
   }
 
+  /**
+   * @return mixed
+   */
   abstract public function run();
 
+  /**
+   * @return HTTPRequest
+   */
   public function httpRequest()
   {
 	return $this->httpRequest;
   }
 
+  /**
+   * @return HTTPResponse
+   */
   public function httpResponse()
   {
 	return $this->httpResponse;
   }
 
+  /**
+   * @return string
+   */
   public function name()
   {
 	return $this->name;

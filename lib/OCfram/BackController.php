@@ -2,14 +2,41 @@
 
 namespace OCFram;
 
+/**
+ * Class BackController
+ *
+ * @package OCFram
+ */
 abstract class BackController extends ApplicationComponent
 {
+  /**
+   * @var string
+   */
   protected $action = '';
+  /**
+   * @var string
+   */
   protected $module = '';
+  /**
+   * @var null|Page
+   */
   protected $page = null;
+  /**
+   * @var string
+   */
   protected $view = '';
+  /**
+   * @var null|Managers
+   */
   protected $managers = null;
 
+  /**
+   * BackController constructor.
+   *
+   * @param Application $app
+   * @param             $module
+   * @param             $action
+   */
   public function __construct(Application $app, $module, $action)
   {
 	parent::__construct($app);
@@ -21,6 +48,9 @@ abstract class BackController extends ApplicationComponent
 	$this->setView($action);
   }
 
+  /**
+   *
+   */
   public function execute()
   {
 	$method = 'execute' . ucfirst($this->action);
@@ -31,14 +61,21 @@ abstract class BackController extends ApplicationComponent
 		'" n\'est pas définie sur ce module');
 	}
 
+	// cool d'avoir l'app ici !!
 	$this->$method($this->app->httpRequest());
   }
 
+  /**
+   * @return null | Page
+   */
   public function page()
   {
 	return $this->page;
   }
 
+  /**
+   * @param $module
+   */
   public function setModule($module)
   {
 	if (!is_string($module) || empty($module))
@@ -49,6 +86,9 @@ abstract class BackController extends ApplicationComponent
 	$this->module = $module;
   }
 
+  /**
+   * @param $action
+   */
   public function setAction($action)
   {
 	if (!is_string($action) || empty($action))
@@ -59,6 +99,9 @@ abstract class BackController extends ApplicationComponent
 	$this->action = $action;
   }
 
+  /**
+   * @param $view
+   */
   public function setView($view)
   {
 	if (!is_string($view) || empty($view))

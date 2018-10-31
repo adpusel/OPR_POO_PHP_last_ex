@@ -5,7 +5,8 @@ namespace OCFram;
 
 /**
  * Class ApplicationComponent
- *    permet d'accede au contener de mon componnant
+ *    	permet d'accede au contener de mon componnant pour charger user par
+ * 		exemple sans faire d'injection de dep
  *
  * @package OCFram
  */
